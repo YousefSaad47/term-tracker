@@ -1,5 +1,3 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
-
 const svgToDataUri = require('mini-svg-data-uri');
 const colors = require('tailwindcss/colors');
 const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette');
@@ -10,10 +8,26 @@ module.exports = {
   darkMode: 'class',
   theme: {
     extend: {
+      backgroundSize: {
+        '200%': '200% 100%',
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            a: {
+              color: '#3182ce',
+              '&:hover': {
+                color: '#2c5282',
+              },
+            },
+          },
+        },
+      },
       animation: {
         scroll:
           'scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite',
         spotlight: 'spotlight 2s ease .75s 1 forwards',
+        shimmer: 'shimmer 2s linear infinite',
       },
       keyframes: {
         scroll: {
@@ -30,6 +44,10 @@ module.exports = {
             opacity: 1,
             transform: 'translate(-50%,-40%) scale(1)',
           },
+        },
+        shimmer: {
+          '0%': { 'background-position': '-100% 0' },
+          '100%': { 'background-position': '100% 0' },
         },
       },
     },

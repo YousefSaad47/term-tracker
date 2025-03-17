@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+model User {
+  id        String    @id @default(uuid())
+  name      String
+  email     String    @unique
+  password  String
+
+  role      Role      @default(USER)
+  
+  subjects  Subject[]
+  weeks     Week[]
+  news      News[]
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@map("users")
+}
+
+
+model Subject {
+  id        String   @id @default(uuid())
+  name     String
+  description String
+  slug      String   @unique
+  intro     String? // Markdown content for the subject introduction
+
+  weeks     Week[]
+  news      News[]
+
+   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+
+  @@map("subjects")
+}
+
+model Week {
+  id         String @id @default(uuid())
+  weekNumber Int // Should be between 1 and 14 (validated in your app logic)
+  content    String // Markdown content for the week (combines lectures, sections, etc.)
+
+  isPublished Boolean @default(false) // false = draft, true = published
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([subjectId, weekNumber])
+  @@map("weeks")
+}
+
+model News {
+  id      String @id @default(uuid())
+  content String // Markdown content for the news item
+
+  isPublished Boolean @default(false) // false = draft, true = published
+
+  subjectId String
+  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+
+   userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("news")
+}

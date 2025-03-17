@@ -1,28 +1,13 @@
 import { Suspense } from 'react';
 import { SubjectTimeLine } from '@/components/subject-timeline';
 import { Loader2 } from 'lucide-react';
+import { getSubjectBySlug, getAllSubjects } from '@/actions/subject-actions';
 
 export async function generateStaticParams() {
-  return [
-    {
-      slug: 'artificial-intelligence',
-    },
-    {
-      slug: 'web-programming',
-    },
-    {
-      slug: 'operating-system-theories',
-    },
-    {
-      slug: 'computer-science-topics',
-    },
-    {
-      slug: 'digital-art',
-    },
-    {
-      slug: 'digital-signals',
-    },
-  ];
+  const subjects = await getAllSubjects();
+  return subjects.map((subject) => ({
+    slug: subject.slug,
+  }));
 }
 
 interface SubjectPageProps {
@@ -30,11 +15,14 @@ interface SubjectPageProps {
 }
 
 const SubjectsPage: React.FC<SubjectPageProps> = async ({ params }) => {
+  const { slug } = await params;
+  const getsubjectbySlugPromise = getSubjectBySlug(slug);
+
   return (
     <Suspense
       fallback={<Loader2 className="absolute top-1/2 left-1/2 animate-spin" />}
     >
-      <SubjectTimeLine params={params} />
+      <SubjectTimeLine getSubjectbySlugPromise={getsubjectbySlugPromise} />
     </Suspense>
   );
 };
