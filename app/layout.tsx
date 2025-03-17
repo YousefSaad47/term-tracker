@@ -3,8 +3,7 @@ import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 
 import { ThemeProvider } from '@/components/theme-provider';
-import Header from '@/components/header';
-import Footer from '@/components/footer';
+import { Toaster } from '@/components/ui/sonner';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-black flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-black flex flex-col min-h-screen`}
       >
         <ThemeProvider
           attribute="class"
@@ -38,9 +37,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Header />
-          <main className="flex-1 mt-20">{children}</main>
-          <Footer />
+          <main className="flex-1">{children}</main>
+          <Toaster position="bottom-center" />
         </ThemeProvider>
       </body>
     </html>

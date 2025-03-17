@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 
+@plugin "@tailwindcss/typography";
+
 @config "../tailwind.config.ts";
 
 @plugin 'tailwindcss-animate';
@@ -214,5 +216,35 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .markdown-content {
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+
+  .markdown-content > *:first-child {
+    margin-top: 0;
+  }
+
+  .markdown-content > *:last-child {
+    margin-bottom: 0;
+  }
+
+  .markdown-content ul,
+  .markdown-content ol {
+    padding-right: 1.5rem;
+  }
+
+  .dark .markdown-content pre {
+    background-color: oklch(0.269 0 0);
+  }
+
+  .dark .markdown-content code {
+    background-color: oklch(0.269 0 0);
+  }
+
+  .dark .markdown-content blockquote {
+    border-color: oklch(0.708 0 0 / 30%);
   }
 }

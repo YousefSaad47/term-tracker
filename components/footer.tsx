@@ -4,33 +4,33 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white dark:bg-black text-black dark:text-white py-12 text-center">
-      <div className="container mx-auto px-6 space-y-6">
+    <footer className="bg-white dark:bg-black text-black dark:text-white py-10 border-t border-neutral-200 dark:border-neutral-800">
+      <div className="container mx-auto px-6 flex flex-col items-center text-center space-y-6">
         <p className="text-lg font-semibold">
           © {currentYear} المعهد التكنولوجي العالي - كل الحقوق محفوظة
         </p>
 
-        <p className="text-sm">
+        <p className="text-sm max-w-md text-neutral-600 dark:text-neutral-400">
           تم تطوير الموقع لدعم الطلاب بمعلومات هامة حول الامتحانات والتنبيهات
           الأكاديمية.
         </p>
 
-        <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mt-4">
+        <div className="flex flex-wrap justify-center items-center gap-6">
           <LinkPreview
             url="https://www.hti.edu.eg/?page_id=3897"
-            className="underline underline-offset-2"
+            className="text-sm font-medium hover:opacity-80 transition-opacity"
           >
             صفحة المعهد الرئيسية
           </LinkPreview>
           <LinkPreview
             url="http://mis.hti.edu.eg/hti/login.jsp"
-            className="underline underline-offset-2"
+            className="text-sm font-medium hover:opacity-80 transition-opacity"
           >
             موقع التسجيل
           </LinkPreview>
           <LinkPreview
             url="https://drive.google.com/file/d/1776CBrZ31gZUXEzkf-ZxB6Pf50uqIrbk/view"
-            className="underline underline-offset-2"
+            className="text-sm font-medium hover:opacity-80 transition-opacity"
           >
             جدول الترم التاني
           </LinkPreview>
