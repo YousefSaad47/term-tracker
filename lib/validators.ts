@@ -40,15 +40,20 @@ export const updateWeekSchema = z.object({
   ),
 });
 
-export const newsCreateSchema = z.object({
+export const createNewsSchema = z.object({
   content: z.string(),
-  isPublished: z.boolean().optional(),
-  subjectId: z.string(),
+  isPublished: z.preprocess(
+    (val) => (typeof val === 'string' ? val === 'on' : val),
+    z.boolean().optional()
+  ),
 });
 
-export const newsUpdateSchema = z.object({
+export const updateNewsSchema = z.object({
   content: z.string().optional(),
-  isPublished: z.boolean().optional(),
+  isPublished: z.preprocess(
+    (val) => (typeof val === 'string' ? val === 'on' : val),
+    z.boolean().optional()
+  ),
 });
 
 export const signupSchema = z.object({

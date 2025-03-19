@@ -2,7 +2,7 @@
 
 import { prisma } from '@/lib/prisma';
 import { createSubjectSchema, subjectUpdateSchema } from '@/lib/validators';
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions';
 import { FormState } from '@/types';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';

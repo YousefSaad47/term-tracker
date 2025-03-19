@@ -36,13 +36,12 @@ model Subject {
   name     String
   description String
   slug      String   @unique
-  intro     String? // Markdown content for the subject introduction
+  intro     String?
 
   weeks     Week[]
-  news      News[]
 
-   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+   userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -53,16 +52,16 @@ model Subject {
 
 model Week {
   id         String @id @default(uuid())
-  weekNumber Int // Should be between 1 and 14 (validated in your app logic)
-  content    String // Markdown content for the week (combines lectures, sections, etc.)
+  weekNumber Int
+  content    String
 
-  isPublished Boolean @default(false) // false = draft, true = published
+  isPublished Boolean @default(false)
 
   subjectId String
   subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
-   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+   userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -73,15 +72,13 @@ model Week {
 
 model News {
   id      String @id @default(uuid())
-  content String // Markdown content for the news item
+  content String
 
-  isPublished Boolean @default(false) // false = draft, true = published
+  isPublished Boolean @default(false)
 
-  subjectId String
-  subject   Subject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
 
-   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+   userId    String?
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

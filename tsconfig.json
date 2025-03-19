@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/dashboard/subjects/create"
+    "app/(admin)/dashboard/subjects/create"
   ],
   "exclude": ["node_modules"]
 }

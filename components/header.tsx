@@ -1,4 +1,4 @@
-import { LinkPreview } from './ui/link-preview';
+import { LinkPreview } from '@/components/ui/link-preview';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -13,7 +13,7 @@ import { LuMenu } from 'react-icons/lu';
 import Link from 'next/link';
 import React, { Suspense } from 'react';
 import UserNavigation from '@/components/user-navigation';
-import { Skeleton } from './ui/skeleton';
+import { Skeleton } from '@/components/ui/skeleton';
 
 function SkeletonFallback() {
   return (
@@ -71,6 +71,9 @@ export default function Header() {
           <DrawerContent>
             <div className="w-full max-w-sm mx-auto flex flex-col gap-3 p-4">
               <DrawerFooter className="space-y-3">
+                <DrawerClose asChild>
+                  <ModeToggle />
+                </DrawerClose>
                 {links.map((link, i) => (
                   <DrawerClose asChild key={i}>
                     <LinkPreview url={link.href}>
