@@ -2,11 +2,11 @@
 
 import { prisma } from '@/lib/prisma';
 import { createWeekSchema, updateWeekSchema } from '@/lib/validators';
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions';
 import { FormState } from '@/types';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
-import { getSubjectSlug } from './subject-actions';
+import { getSubjectSlug } from '@/actions';
 
 export async function getWeeksBySubject(subjectId: string) {
   try {

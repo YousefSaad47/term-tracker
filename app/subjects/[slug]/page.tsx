@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
-import { SubjectTimeLine } from '@/components/subject-timeline';
+import { SubjectTimeLine } from '@/components/subjects';
 import { Loader2 } from 'lucide-react';
-import { getSubjectBySlug, getAllSubjects } from '@/actions/subject-actions';
+import { getSubjectBySlug, getAllSubjects } from '@/actions';
 
 export async function generateStaticParams() {
   const subjects = await getAllSubjects();

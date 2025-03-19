@@ -1,4 +1,4 @@
-import { Spotlight } from './ui/spotlight';
+import { Spotlight } from '@/components/ui/spotlight';
 
 export function HeroSection() {
   return (

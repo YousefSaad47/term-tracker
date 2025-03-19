@@ -1,7 +1,7 @@
-import { getCurrentUser } from '@/actions/get-current-user';
+import { getCurrentUser } from '@/actions';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { signout } from '@/actions/signout';
+import { signout } from '@/actions';
 import React from 'react';
 
 export default async function UserNavigation() {
@@ -10,14 +10,17 @@ export default async function UserNavigation() {
   if (currentUser) {
     return (
       <form action={signout}>
-        <Button type="submit" variant="outline">
+        <Button type="submit" className="w-full" variant="destructive">
           Sign Out
         </Button>
       </form>
     );
   } else {
     return (
-      <Link href="/signin" className="text-sm font-bold text-blue-500">
+      <Link
+        href="/signin"
+        className="text-sm font-bold text-center text-blue-500"
+      >
         Sign In
       </Link>
     );

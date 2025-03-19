@@ -1,10 +1,10 @@
-import { LinkPreview } from './ui/link-preview';
+import { LinkPreview } from '@/components/ui/link-preview';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-white dark:bg-black text-black dark:text-white py-10 border-t border-neutral-200 dark:border-neutral-800">
+    <footer className="bg-white dark:bg-black text-black dark:text-white py-10">
       <div className="container mx-auto px-6 flex flex-col items-center text-center space-y-6">
         <p className="text-lg font-semibold">
           © {currentYear} المعهد التكنولوجي العالي - كل الحقوق محفوظة
