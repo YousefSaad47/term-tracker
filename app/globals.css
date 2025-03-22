@@ -212,7 +212,7 @@
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border outline-ring/50 max-w-full;
   }
   body {
     @apply bg-background text-foreground;

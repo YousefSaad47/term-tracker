@@ -4,16 +4,20 @@ import { prisma } from '@/lib/prisma';
 import { createNewsSchema, updateNewsSchema } from '@/lib/validators';
 import { FormState } from '@/types';
 import { getCurrentUser } from '@/actions';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_cache } from 'next/cache';
 
-export async function getAllNews() {
-  try {
-    return await prisma.news.findMany();
-  } catch (error) {
-    console.error('Error fetching news:', error);
-    throw error;
-  }
-}
+export const getAllNews = unstable_cache(
+  async function getAllNews() {
+    try {
+      return await prisma.news.findMany();
+    } catch (error) {
+      console.error('Error fetching news:', error);
+      throw error;
+    }
+  },
+  ['news'],
+  { revalidate: 86400, tags: ['news'] }
+);
 
 export async function getNewsById(id: string) {
   try {

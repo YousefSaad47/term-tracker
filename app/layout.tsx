@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
+import { Analytics } from '@vercel/analytics/react';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -19,6 +20,7 @@ export const metadata: Metadata = {
   title: 'Term Tracker',
   description:
     'Tracking term subjects, materials, tasks, quizzes and more information',
+  viewport: 'width=device-width, initial-scale=1',
 };
 
 export default function RootLayout({
@@ -38,6 +40,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="flex-1">{children}</main>
+          <Analytics />
           <Toaster position="bottom-center" />
         </ThemeProvider>
       </body>
