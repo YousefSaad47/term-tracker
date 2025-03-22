@@ -1,7 +1,12 @@
+'use client';
+
 import { Timeline } from '@/components/ui/timeline';
 import WeekContent from '@/components/weeks/week-content';
 import { FullSubjectType } from '@/types';
-import { notFound } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { use, useEffect, useRef, useState } from 'react';
+import { FaArrowDown, FaArrowRight } from 'react-icons/fa';
 
 interface TimelineEntry {
   title: string;
@@ -12,10 +17,35 @@ interface SubjectTimeLineProps {
   getSubjectbySlugPromise: Promise<FullSubjectType>;
 }
 
-export const SubjectTimeLine: React.FC<SubjectTimeLineProps> = async ({
+export const SubjectTimeLine: React.FC<SubjectTimeLineProps> = ({
   getSubjectbySlugPromise,
 }) => {
-  const subject = await getSubjectbySlugPromise;
+  const subject = use(getSubjectbySlugPromise);
+
+  const ref = useRef<HTMLDivElement>(null);
+  const [showArrow, setShowArrow] = useState(true);
+  const { back } = useRouter();
+
+  const scrollToElement = () => {
+    if (ref.current) {
+      ref.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollableHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const threshold = scrollableHeight * 0.75;
+      const scrollTop = window.scrollY;
+      setShowArrow(scrollTop < threshold);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   if (!subject) {
     notFound();
@@ -42,7 +72,26 @@ export const SubjectTimeLine: React.FC<SubjectTimeLineProps> = async ({
 
   return (
     <div className="w-full">
+      <Button
+        variant="secondary"
+        className="fixed top-1 right-1 md:top-8 md:right-8 rounded-full z-1"
+        onClick={back}
+      >
+        <FaArrowRight />
+      </Button>
+
+      {showArrow && (
+        <Button
+          variant={'secondary'}
+          onClick={scrollToElement}
+          className="fixed bottom-1 right-1 md:bottom-8 md:right-8 z-1 rounded-full"
+        >
+          <FaArrowDown />
+        </Button>
+      )}
+
       <Timeline data={timelineData} title={subject?.name as string} />
+      <div ref={ref} />
     </div>
   );
 };

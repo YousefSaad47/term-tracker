@@ -4,17 +4,21 @@ import { prisma } from '@/lib/prisma';
 import { createSubjectSchema, subjectUpdateSchema } from '@/lib/validators';
 import { getCurrentUser } from '@/actions';
 import { FormState } from '@/types';
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, unstable_cache } from 'next/cache';
 import { Prisma } from '@prisma/client';
 
-export async function getAllSubjects() {
-  try {
-    return await prisma.subject.findMany();
-  } catch (error) {
-    console.error('Error fetching all subjects:', error);
-    throw error;
-  }
-}
+export const getAllSubjects = unstable_cache(
+  async function getAllSubjects() {
+    try {
+      return await prisma.subject.findMany();
+    } catch (error) {
+      console.error('Error fetching all subjects:', error);
+      throw error;
+    }
+  },
+  ['subjects'],
+  { revalidate: 86400, tags: ['subjects'] }
+);
 
 export const getSubjectById = async (id: string) => {
   try {
