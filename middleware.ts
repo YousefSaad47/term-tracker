@@ -1,12 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authRoutes, adminRoutes } from '@/routes';
+import { authRoutes, adminRoutesPrefix } from '@/routes';
 import { verifyJWT } from '@/lib/auth';
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
   const token = request.cookies.get('access_token')?.value;
 
-  const isAdminRoute = pathname.startsWith('/dashboard');
+  if (request.headers.has('x-middleware-subrequest')) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const isAdminRoute = pathname.startsWith(adminRoutesPrefix);
   const isAuthRoute = authRoutes.includes(pathname);
 
   if (isAdminRoute && !token) {
