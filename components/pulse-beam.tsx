@@ -1,52 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'motion/react';
 
-const grad1 = {
-  initial: {
-    x1: '0%',
-    x2: '0%',
-    y1: '80%',
-    y2: '100%',
-  },
-  animate: {
-    x1: ['0%', '0%', '200%'],
-    x2: ['0%', '0%', '180%'],
-    y1: ['80%', '0%', '0%'],
-    y2: ['100%', '20%', '20%'],
-  },
-};
-
-const grad2 = {
-  initial: {
-    x1: '0%',
-    x2: '0%',
-    y1: '80%',
-    y2: '100%',
-  },
-  animate: {
-    x1: ['20%', '100%', '100%'],
-    x2: ['0%', '90%', '90%'],
-    y1: ['80%', '80%', '-20%'],
-    y2: ['100%', '100%', '0%'],
-  },
-};
-const grad3 = {
-  initial: {
-    x1: '0%',
-    x2: '0%',
-    y1: '80%',
-    y2: '100%',
-  },
-  animate: {
-    x1: ['20%', '100%', '100%'],
-    x2: ['0%', '90%', '90%'],
-    y1: ['80%', '80%', '-20%'],
-    y2: ['100%', '100%', '0%'],
-  },
-};
-const grad4 = {
+const grad = {
   initial: {
     x1: '40%',
     x2: '50%',
@@ -60,49 +16,12 @@ const grad4 = {
     y2: '-20%',
   },
 };
-const grad5 = {
-  initial: {
-    x1: '-40%',
-    x2: '-10%',
-    y1: '0%',
-    y2: '20%',
-  },
-  animate: {
-    x1: ['40%', '0%', '0%'],
-    x2: ['10%', '0%', '0%'],
-    y1: ['0%', '0%', '180%'],
-    y2: ['20%', '20%', '200%'],
-  },
-};
+
 export const PulseBeams = () => {
   return (
-    <>
-      <blockquote className="mx-auto max-w-2xl border-l-4 border-blue-500 pl-4 italic text-center text-base font-medium text-black dark:text-white">
-        Hi there, if you enjoy my work, I&apos;d really appreciate it if you
-        could connect with me on LinkedIn. Your support and feedback help me
-        grow and develop further. Thank you!
-      </blockquote>
-      <div className="flex h-[40rem] relative items-center justify-center antialiased bg-white dark:bg-black overflow-hidden">
-        <button className="bg-slate-800 w-[320px] z-40 h-[120px] no-underline group cursor-pointer relative shadow-2xl shadow-zinc-900 rounded-full p-px text-xs font-semibold leading-6  text-white inline-block">
-          <span className="absolute inset-0 overflow-hidden rounded-full">
-            <span className="absolute inset-0 rounded-full bg-[image:radial-gradient(75%_100%_at_50%_0%,rgba(56,189,248,0.6)_0%,rgba(56,189,248,0)_75%)] opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          </span>
-          <div className="relative flex justify-center w-[320px] text-center space-x-2 h-[120px]  items-center z-10 rounded-full bg-white dark:bg-zinc-950 py-0.5 px-4 ring-1 ring-white/10 ">
-            <span className="md:text-4xl text-base inline-block bg-clip-text text-transparent bg-gradient-to-r from-neutral-300 via-neutral-600 to-neutral-300">
-              <a
-                href="https://www.linkedin.com/in/yousefsaad47/"
-                target="_blank"
-              >
-                Connect
-              </a>
-            </span>
-          </div>
-        </button>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <SVGs />
-        </div>
-      </div>
-    </>
+    <div className="absolute right-0 bottom-0">
+      <SVGs />
+    </div>
   );
 };
 
@@ -117,164 +36,28 @@ export const SVGs = () => {
       className="flex flex-shrink-0"
     >
       <path
-        d="M269 220.5H16.5C10.9772 220.5 6.5 224.977 6.5 230.5V398.5"
-        stroke="var(--slate-800)"
-      />
-      <path
-        d="M568 200H841C846.523 200 851 195.523 851 190V40"
-        stroke="var(--slate-800)"
-      />
-      <path
-        d="M425.5 274V333C425.5 338.523 421.023 343 415.5 343H152C146.477 343 142 347.477 142 353V426.5"
-        stroke="var(--slate-800)"
-      />
-      <path
         d="M493 274V333.226C493 338.749 497.477 343.226 503 343.226H760C765.523 343.226 770 347.703 770 353.226V427"
-        stroke="var(--slate-800)"
-      />
-      <path
-        d="M380 168V17C380 11.4772 384.477 7 390 7H414"
-        stroke="var(--slate-800)"
-      />
-
-      <path
-        d="M269 220.5H16.5C10.9772 220.5 6.5 224.977 6.5 230.5V398.5"
-        stroke="url(#grad1)"
-      />
-      <path
-        d="M568 200H841C846.523 200 851 195.523 851 190V40"
-        stroke="url(#grad2)"
-      />
-      <path
-        d="M425.5 274V333C425.5 338.523 421.023 343 415.5 343H152C146.477 343 142 347.477 142 353V426.5"
-        stroke="url(#grad3)"
-      />
-      <path
-        d="M493 274V333.226C493 338.749 497.477 343.226 503 343.226H760C765.523 343.226 770 347.703 770 353.226V427"
-        stroke="url(#grad4)"
-      />
-      <path
-        d="M380 168V17C380 11.4772 384.477 7 390 7H414"
-        stroke="url(#grad5)"
+        stroke="url(#grad)"
       />
 
       <defs>
         <motion.linearGradient
-          variants={grad5}
-          animate="animate"
+          variants={grad}
           initial="initial"
+          animate="animate"
           transition={{
-            duration: 2,
+            duration: 2.5,
             repeat: Infinity,
             repeatType: 'loop',
             ease: 'linear',
-            repeatDelay: 2,
-            delay: Math.random() * 2,
+            repeatDelay: 0,
+            delay: 2,
           }}
-          id="grad5"
-        >
-          <GradientColors />
-        </motion.linearGradient>
-        <motion.linearGradient
-          variants={grad1}
-          animate="animate"
-          initial="initial"
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: 'loop',
-            ease: 'linear',
-            repeatDelay: 2,
-            delay: Math.random() * 2,
-          }}
-          id="grad1"
-        >
-          <GradientColors />
-        </motion.linearGradient>
-        <motion.linearGradient
-          variants={grad2}
-          animate="animate"
-          initial="initial"
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: 'loop',
-            ease: 'linear',
-            repeatDelay: 2,
-            delay: Math.random() * 2,
-          }}
-          id="grad2"
-        >
-          <GradientColors />
-        </motion.linearGradient>
-        <motion.linearGradient
-          variants={grad3}
-          animate="animate"
-          initial="initial"
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: 'loop',
-            ease: 'linear',
-            repeatDelay: 2,
-            delay: Math.random() * 2,
-          }}
-          id="grad3"
-        >
-          <GradientColors />
-        </motion.linearGradient>
-        <motion.linearGradient
-          variants={grad4}
-          animate="animate"
-          initial="initial"
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatType: 'loop',
-            ease: 'linear',
-            repeatDelay: 2,
-            delay: Math.random() * 2,
-          }}
-          id="grad4"
+          id="grad"
         >
           <GradientColors />
         </motion.linearGradient>
       </defs>
-      <circle
-        cx="851"
-        cy="34"
-        r="6.5"
-        fill="var(--slate-700)"
-        stroke="var(--slate-600)"
-      />
-      <circle
-        cx="770"
-        cy="427"
-        r="6.5"
-        fill="var(--slate-700)"
-        stroke="var(--slate-600)"
-      />
-      <circle
-        cx="142"
-        cy="427"
-        r="6.5"
-        fill="var(--slate-700)"
-        stroke="var(--slate-600)"
-      />
-      <circle
-        cx="6.5"
-        cy="398.5"
-        r="6"
-        fill="var(--slate-700)"
-        stroke="var(--slate-600)"
-      />
-      <circle
-        cx="420.5"
-        cy="6.5"
-        r="6"
-        fill="var(--slate-700)"
-        stroke="var(--slate-600)"
-      />
     </svg>
   );
 };

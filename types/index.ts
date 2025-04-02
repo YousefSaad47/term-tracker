@@ -1,21 +1,10 @@
 import { Subject, Week } from '@prisma/client';
 
-export type FormData = {
-  name?: string;
-  email?: string;
-  password?: string;
-  slug?: string;
-  description?: string;
-  content?: string;
-  weekNumber?: number;
-  subjectId?: string;
-};
-
 export type FormState =
   | {
-      errors?: FormData;
+      errors?: Record<string, string[]>;
       message?: string;
-      inputs?: FormData;
+      inputs?: Record<string, string | number>;
       success?: boolean;
     }
   | undefined;

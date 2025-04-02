@@ -1,7 +1,6 @@
 import { HeroSection } from '@/components/hero-section';
 import { InstallPrompt } from '@/components/install-prompt';
 import { NewsSection } from '@/components/news';
-import { PulseBeams } from '@/components/pulse-beam';
 import { SubjectsGrid } from '@/components/subjects';
 
 export default function Home() {
@@ -12,8 +11,6 @@ export default function Home() {
       <SubjectsGrid />
 
       <NewsSection />
-
-      <PulseBeams />
 
       <InstallPrompt />
     </>

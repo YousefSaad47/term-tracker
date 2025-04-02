@@ -5,8 +5,8 @@ const Logo = () => {
     <Image
       src="/logo.svg"
       alt="Higher Technology Institute Logo"
-      width={50}
-      height={50}
+      width={45}
+      height={45}
       className="bg-white rounded-md p-1"
     />
   );

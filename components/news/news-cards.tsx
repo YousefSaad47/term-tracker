@@ -15,7 +15,7 @@ export async function NewsCards({ newsPromise }: NewsCardsProps) {
     }));
 
   return (
-    <div className="h-[40rem] rounded-md flex flex-col antialiased bg-white dark:bg-black bg-grid-black/[0.04] dark:bg-grid-white/[0.04] items-center justify-center relative overflow-hidden">
+    <div className="h-[40rem] rounded-md flex flex-col antialiased bg-white dark:bg-black bg-grid-black/[0.03] dark:bg-grid-white/[0.03] items-center justify-center relative overflow-hidden">
       <InfiniteMovingCards items={items} direction="right" speed="fast" />
     </div>
   );

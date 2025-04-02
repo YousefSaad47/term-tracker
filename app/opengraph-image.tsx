@@ -12,7 +12,7 @@ export const contentType = 'image/png';
 
 export default async function Image() {
   const imageData = await readFile(
-    join(process.cwd(), '/public/icons/logo.png')
+    join(process.cwd(), '/public/open-graph.png')
   );
   const base64Image = Buffer.from(imageData).toString('base64');
   const imageSrc = `data:image/png;base64,${base64Image}`;

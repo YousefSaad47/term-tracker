@@ -17,12 +17,9 @@ export default async function UserNavigation() {
     );
   } else {
     return (
-      <Link
-        href="/signin"
-        className="text-sm font-bold text-center text-blue-500"
-      >
-        Sign In
-      </Link>
+      <Button asChild className="rounded-full">
+        <Link href="/signin">Sign In</Link>
+      </Button>
     );
   }
 }
