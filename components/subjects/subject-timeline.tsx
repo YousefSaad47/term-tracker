@@ -6,7 +6,8 @@ import { FullSubjectType } from '@/types';
 import { notFound, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { use, useEffect, useRef, useState } from 'react';
-import { FaArrowDown, FaArrowRight } from 'react-icons/fa';
+import { ArrowRightIcon } from '@/components/ui/arrow-right-icon';
+import { ArrowDownIcon } from '@/components/ui/arrow-down-icon';
 
 interface TimelineEntry {
   title: string;
@@ -36,7 +37,7 @@ export const SubjectTimeLine: React.FC<SubjectTimeLineProps> = ({
     const handleScroll = () => {
       const scrollableHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      const threshold = scrollableHeight * 0.75;
+      const threshold = scrollableHeight * 0.98;
       const scrollTop = window.scrollY;
       setShowArrow(scrollTop < threshold);
     };
@@ -73,20 +74,22 @@ export const SubjectTimeLine: React.FC<SubjectTimeLineProps> = ({
   return (
     <div className="w-full">
       <Button
+        size="icon"
         variant="secondary"
         className="fixed top-1 right-1 md:top-8 md:right-8 rounded-full z-1"
         onClick={back}
       >
-        <FaArrowRight />
+        <ArrowRightIcon className="rounded-full" />
       </Button>
 
       {showArrow && (
         <Button
-          variant={'secondary'}
+          size="icon"
+          variant="secondary"
           onClick={scrollToElement}
           className="fixed bottom-1 right-1 md:bottom-8 md:right-8 z-1 rounded-full"
         >
-          <FaArrowDown />
+          <ArrowDownIcon className="rounded-full" />
         </Button>
       )}
 

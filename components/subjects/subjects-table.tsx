@@ -97,8 +97,8 @@ export function SubjectsTable({ subjectsPromise }: DataTableDemoProps) {
         return (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="w-8 h-8 p-0">
-                <MoreHorizontal className="h-4 w-4" />
+              <Button variant="ghost" size={'icon'}>
+                <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">

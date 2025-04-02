@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
+import { FetchInterceptor } from '@/components/fetch-interceptor';
 
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
@@ -40,6 +41,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <main className="flex-1">{children}</main>
+          <FetchInterceptor />
           <Analytics />
           <Toaster position="bottom-center" />
         </ThemeProvider>
