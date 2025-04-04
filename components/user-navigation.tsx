@@ -17,7 +17,7 @@ export default async function UserNavigation() {
     );
   } else {
     return (
-      <Button asChild className="rounded-full">
+      <Button asChild>
         <Link href="/signin">Sign In</Link>
       </Button>
     );

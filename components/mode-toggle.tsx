@@ -1,15 +1,13 @@
 'use client';
 
 import { useTheme } from 'next-themes';
-import React, { useEffect, useState } from 'react';
 import { SunDimIcon } from '@/components/ui/sun-dim-icon';
 import { MoonIcon } from '@/components/ui/moon-icon';
+import { useMounted } from '@/hooks/use-mounted';
 
 export function ModeToggle() {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
+  const { mounted } = useMounted();
 
   if (!mounted) return null;
 

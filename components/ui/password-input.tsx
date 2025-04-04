@@ -72,8 +72,8 @@ export default function PasswordInput({
           <Input
             id={id}
             name={name}
-            className={cn('pe-9', error && 'border-destructive')}
-            placeholder="Password"
+            className={cn('pe-9 rounded-full', error && 'border-destructive')}
+            placeholder="********"
             type={isVisible ? 'text' : 'password'}
             disabled={disabled}
             value={value}
@@ -85,7 +85,17 @@ export default function PasswordInput({
             aria-label={isVisible ? 'Hide password' : 'Show password'}
             className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center"
           >
-            {isVisible ? <EyeOffIcon size={16} /> : <EyeIcon size={16} />}
+            {isVisible ? (
+              <EyeOffIcon
+                className="hover:text-muted-foreground cursor-pointer"
+                size={16}
+              />
+            ) : (
+              <EyeIcon
+                className="hover:text-muted-foreground cursor-pointer"
+                size={16}
+              />
+            )}
           </button>
         </div>
         {error && <p className="text-destructive text-sm mt-2">{error}</p>}
@@ -105,7 +115,7 @@ export default function PasswordInput({
       </div>
 
       <p className="text-foreground mb-2 text-sm font-medium">
-        {getStrengthText(strengthScore)}. Must contain:
+        {getStrengthText(strengthScore)}. Should contain:
       </p>
       <ul className="space-y-1.5">
         {strength.map((req, index) => (

@@ -37,7 +37,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ action, variant }) => {
               placeholder="John Doe"
               defaultValue={state?.inputs?.name}
               disabled={isPending}
-              className={cn(state?.errors?.name && 'border-destructive')}
+              className={cn(
+                'rounded-full',
+                state?.errors?.name && 'border-destructive'
+              )}
             />
             {state?.errors?.name && (
               <p className="text-destructive text-sm">{state.errors.name}</p>
@@ -53,7 +56,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ action, variant }) => {
           placeholder="johndoe@gmail.com"
           defaultValue={state?.inputs?.email}
           disabled={isPending}
-          className={cn(state?.errors?.email && 'border-destructive')}
+          className={cn(
+            'rounded-full',
+            state?.errors?.email && 'border-destructive'
+          )}
         />
         {state?.errors?.email && (
           <p className="text-destructive text-sm">{state.errors.email}</p>
@@ -72,13 +78,15 @@ const AuthForm: React.FC<AuthFormProps> = ({ action, variant }) => {
               Password <span className="text-destructive">*</span>
             </Label>
             <Input
-              id="password"
               name="password"
-              placeholder="password"
+              placeholder="********"
               type="password"
               defaultValue={state?.inputs?.password}
               disabled={isPending}
-              className={cn(state?.errors?.password && 'border-destructive')}
+              className={cn(
+                'rounded-full',
+                state?.errors?.password && 'border-destructive'
+              )}
             />
             {state?.errors?.password && (
               <p className="text-destructive text-sm">
@@ -87,7 +95,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ action, variant }) => {
             )}
           </>
         )}
-        <Button type="submit" disabled={isPending} className="w-full mt-4">
+        <Button
+          type="submit"
+          disabled={isPending}
+          className="w-full mt-4 rounded-full"
+        >
           {isPending && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
           {variant === 'SIGNIN' ? 'Sign in' : 'Sign up'}
         </Button>

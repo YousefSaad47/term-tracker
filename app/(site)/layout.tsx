@@ -1,4 +1,4 @@
-import Footer from '@/components/footer';
+import FooterComp from '@/components/footer';
 import Header from '@/components/header';
 
 export default function SiteLayout({
@@ -10,7 +10,7 @@ export default function SiteLayout({
     <>
       <Header />
       <main className="flex-1">{children}</main>
-      <Footer />
+      <FooterComp />
     </>
   );
 }
