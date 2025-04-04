@@ -1,4 +1,3 @@
-import { LinkPreview } from '@/components/ui/link-preview';
 import { Button } from '@/components/ui/button';
 import {
   Drawer,
@@ -20,24 +19,8 @@ import { DialogTitle } from '@/components/ui/dialog';
 
 const navigationLinks = [
   {
-    name: 'صفحة المعهد الرئيسية',
-    href: 'https://www.hti.edu.eg/?page_id=3897',
-    category: 'external',
-  },
-  {
-    name: 'موقع التسجيل',
-    href: 'http://mis.hti.edu.eg/hti/login.jsp',
-    category: 'external',
-  },
-  {
-    name: 'جدول الترم التاني',
-    href: 'https://drive.google.com/file/d/1776CBrZ31gZUXEzkf-ZxB6Pf50uqIrbk/view',
-    category: 'external',
-  },
-  {
     name: 'dashboard',
     href: '/dashboard',
-    category: 'internal',
   },
 ];
 
@@ -77,14 +60,14 @@ const SocialLinks = ({ className = '' }) => (
 const DesktopNavigation = () => (
   <nav className="hidden md:flex items-center gap-6">
     <div className="flex items-center gap-4">
-      {navigationLinks.map((link, i) => (
-        <LinkPreview
-          key={i}
-          url={link.href}
+      {navigationLinks.map((link) => (
+        <Link
+          key={link.name}
+          href={link.href}
           className="relative text-foreground hover:text-primary transition-colors"
         >
           {link.name}
-        </LinkPreview>
+        </Link>
       ))}
     </div>
 
@@ -108,22 +91,20 @@ const MobileNavigation = () => (
         <DialogTitle></DialogTitle>
         <div className="w-full max-w-sm mx-auto flex flex-col gap-3 p-4">
           <DrawerFooter className="space-y-3">
-            {navigationLinks.map((link, i) => (
-              <DrawerClose asChild key={i}>
-                <LinkPreview url={link.href}>
+            {navigationLinks.map((link) => (
+              <DrawerClose asChild key={link.name}>
+                <Link href={link.href}>
                   <Button variant="secondary" className="w-full font-medium">
                     {link.name}
                   </Button>
-                </LinkPreview>
+                </Link>
               </DrawerClose>
             ))}
 
-            <DrawerClose asChild>
-              <div className="flex items-center mx-auto gap-4">
-                <SocialLinks />
-                <ModeToggle />
-              </div>
-            </DrawerClose>
+            <div className="flex items-center mx-auto gap-4">
+              <SocialLinks />
+              <ModeToggle />
+            </div>
 
             <DrawerClose asChild>
               <Suspense fallback={<LoadingSkeleton />}>
