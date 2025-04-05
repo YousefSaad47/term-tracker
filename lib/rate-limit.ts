@@ -2,16 +2,35 @@ import { Ratelimit } from '@upstash/ratelimit';
 import { Redis } from '@upstash/redis';
 import { headers } from 'next/headers';
 
-export const ratelimit = new Ratelimit({
-  redis: Redis.fromEnv(),
-  limiter: Ratelimit.slidingWindow(10, '30 s'),
-  analytics: true,
-  prefix: '@upstash/ratelimit-server-actions',
-});
+let cached: Ratelimit | null = null;
+let warned = false;
+
+function getRatelimit(): Ratelimit | null {
+  if (cached) return cached;
+  try {
+    cached = new Ratelimit({
+      redis: Redis.fromEnv(),
+      limiter: Ratelimit.slidingWindow(10, '30 s'),
+      analytics: true,
+      prefix: '@upstash/ratelimit-server-actions',
+    });
+    return cached;
+  } catch (error) {
+    if (!warned) {
+      warned = true;
+      console.error('Rate limiter unavailable (fail-open):', error);
+    }
+    return null;
+  }
+}
 
 export async function checkRateLimit(identifier: string) {
+  const rl = getRatelimit();
+  if (!rl) {
+    return { success: true, limit: 0, remaining: 0, reset: 0 } as const;
+  }
   try {
-    return await ratelimit.limit(identifier);
+    return await rl.limit(identifier);
   } catch (error) {
     console.error('Rate limit check failed (fail-open):', error);
     return { success: true, limit: 0, remaining: 0, reset: 0 } as const;
