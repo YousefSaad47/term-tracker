@@ -2,10 +2,11 @@
 
 import { prisma } from '@/lib/prisma';
 import { createSubjectSchema, subjectUpdateSchema } from '@/lib/validators';
-import { getCurrentUser } from '@/actions';
 import { FormState } from '@/types';
 import { revalidatePath, unstable_cache } from 'next/cache';
 import { Prisma } from '@prisma/client';
+import { RATE_LIMIT_MESSAGE, withRateLimit } from '@/lib/rate-limit';
+import { withAdmin, type CurrentUser } from '@/lib/admin';
 
 export const getAllSubjects = unstable_cache(
   async function getAllSubjects() {
@@ -31,20 +32,11 @@ export const getSubjectById = async (id: string) => {
   }
 };
 
-export const createSubject = async (
+async function createSubjectAction(
+  currentUser: CurrentUser,
   _prevState: FormState,
   formData: FormData
-) => {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    return;
-  }
-
-  if (currentUser.role !== 'ADMIN') {
-    return;
-  }
-
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   try {
@@ -101,21 +93,18 @@ export const createSubject = async (
   }
 };
 
-export const updateSubject = async (
+export const createSubject = withRateLimit(
+  'createSubject',
+  withAdmin(createSubjectAction),
+  { message: RATE_LIMIT_MESSAGE } as FormState
+);
+
+async function updateSubjectAction(
+  _currentUser: CurrentUser,
   subjectId: string,
   _prevState: FormState,
   formData: FormData
-) => {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) {
-    return;
-  }
-
-  if (currentUser.role !== 'ADMIN') {
-    return;
-  }
-
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   try {
@@ -173,17 +162,16 @@ export const updateSubject = async (
   }
 };
 
-export async function deleteSubject(id: string) {
-  const currentUser = await getCurrentUser();
+export const updateSubject = withRateLimit(
+  'updateSubject',
+  withAdmin(updateSubjectAction),
+  { message: RATE_LIMIT_MESSAGE } as FormState
+);
 
-  if (!currentUser) {
-    return;
-  }
-
-  if (currentUser.role !== 'ADMIN') {
-    return;
-  }
-
+async function deleteSubjectAction(
+  _currentUser: CurrentUser,
+  id: string
+): Promise<{ success: boolean; message?: string } | undefined> {
   try {
     const { slug } = await prisma.subject.delete({
       where: { id },
@@ -191,11 +179,18 @@ export async function deleteSubject(id: string) {
     revalidatePath('/dashboard/subjects');
     revalidatePath('/');
     revalidatePath(`/subjects/${slug}`);
+    return { success: true };
   } catch (error) {
     console.error('Error deleting subject:', error);
     throw error;
   }
 }
+
+export const deleteSubject = withRateLimit(
+  'deleteSubject',
+  withAdmin(deleteSubjectAction),
+  { success: false, message: RATE_LIMIT_MESSAGE }
+);
 
 export async function getSubjectBySlug(slug: string) {
   try {

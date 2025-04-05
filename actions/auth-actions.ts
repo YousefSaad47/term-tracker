@@ -8,8 +8,12 @@ import { generateJWT } from '@/lib/auth';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Prisma } from '@prisma/client';
+import { RATE_LIMIT_MESSAGE, withRateLimit } from '@/lib/rate-limit';
 
-export const signin = async (_prevState: FormState, formData: FormData) => {
+async function signinAction(
+  _prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   const validatedFields = signinSchema.safeParse(formDataObj);
@@ -52,9 +56,16 @@ export const signin = async (_prevState: FormState, formData: FormData) => {
   });
 
   return redirect('/');
-};
+}
 
-export const signup = async (_prevState: FormState, formData: FormData) => {
+export const signin = withRateLimit('signin', signinAction, {
+  message: RATE_LIMIT_MESSAGE,
+} as FormState);
+
+async function signupAction(
+  _prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   const validatedFields = signupSchema.safeParse(formDataObj);
@@ -95,8 +106,12 @@ export const signup = async (_prevState: FormState, formData: FormData) => {
     }
   }
 
-  await signin(_prevState, formData);
-};
+  return signinAction(_prevState, formData);
+}
+
+export const signup = withRateLimit('signup', signupAction, {
+  message: RATE_LIMIT_MESSAGE,
+} as FormState);
 
 export const signout = async () => {
   (await cookies()).delete('access_token');

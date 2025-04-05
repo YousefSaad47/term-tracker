@@ -3,8 +3,9 @@
 import { prisma } from '@/lib/prisma';
 import { createNewsSchema, updateNewsSchema } from '@/lib/validators';
 import { FormState } from '@/types';
-import { getCurrentUser } from '@/actions';
 import { revalidatePath, unstable_cache } from 'next/cache';
+import { RATE_LIMIT_MESSAGE, withRateLimit } from '@/lib/rate-limit';
+import { withAdmin, type CurrentUser } from '@/lib/admin';
 
 export const getAllNews = unstable_cache(
   async function getAllNews() {
@@ -30,12 +31,11 @@ export async function getNewsById(id: string) {
   }
 }
 
-export async function createNews(_prevState: FormState, formData: FormData) {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) return;
-  if (currentUser.role !== 'ADMIN') return;
-
+async function createNewsAction(
+  _currentUser: CurrentUser,
+  _prevState: FormState,
+  formData: FormData
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   const validatedFields = createNewsSchema.safeParse(formDataObj);
@@ -71,16 +71,18 @@ export async function createNews(_prevState: FormState, formData: FormData) {
   }
 }
 
-export async function updateNews(
+export const createNews = withRateLimit(
+  'createNews',
+  withAdmin(createNewsAction),
+  { message: RATE_LIMIT_MESSAGE } as FormState
+);
+
+async function updateNewsAction(
+  _currentUser: CurrentUser,
   id: string,
   _prevState: FormState,
   formData: FormData
-) {
-  const currentUser = await getCurrentUser();
-
-  if (!currentUser) return;
-  if (currentUser.role !== 'ADMIN') return;
-
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   const validatedFields = updateNewsSchema.safeParse(formDataObj);
@@ -117,12 +119,16 @@ export async function updateNews(
   }
 }
 
-export async function deleteNews(id: string) {
-  const currentUser = await getCurrentUser();
+export const updateNews = withRateLimit(
+  'updateNews',
+  withAdmin(updateNewsAction),
+  { message: RATE_LIMIT_MESSAGE } as FormState
+);
 
-  if (!currentUser) return;
-  if (currentUser.role !== 'ADMIN') return;
-
+async function deleteNewsAction(
+  _currentUser: CurrentUser,
+  id: string
+): Promise<{ success: boolean; message?: string } | undefined> {
   try {
     await prisma.news.delete({
       where: { id },
@@ -139,3 +145,12 @@ export async function deleteNews(id: string) {
     throw error;
   }
 }
+
+export const deleteNews = withRateLimit(
+  'deleteNews',
+  withAdmin(deleteNewsAction),
+  {
+    success: false,
+    message: RATE_LIMIT_MESSAGE,
+  }
+);

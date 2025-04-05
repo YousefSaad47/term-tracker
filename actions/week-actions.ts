@@ -2,11 +2,12 @@
 
 import { prisma } from '@/lib/prisma';
 import { createWeekSchema, updateWeekSchema } from '@/lib/validators';
-import { getCurrentUser } from '@/actions';
 import { FormState } from '@/types';
 import { revalidatePath } from 'next/cache';
 import { Prisma } from '@prisma/client';
 import { getSubjectSlug } from '@/actions';
+import { RATE_LIMIT_MESSAGE, withRateLimit } from '@/lib/rate-limit';
+import { withAdmin, type CurrentUser } from '@/lib/admin';
 
 export async function getWeeksBySubject(subjectId: string) {
   try {
@@ -31,15 +32,12 @@ export async function getWeekById(id: string) {
   }
 }
 
-export const createWeek = async (
+async function createWeekAction(
+  currentUser: CurrentUser,
   subjectId: string,
   _prevState: FormState,
   formData: FormData
-) => {
-  const currentUser = await getCurrentUser();
-  if (!currentUser) return;
-  if (currentUser.role !== 'ADMIN') return;
-
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   try {
@@ -92,16 +90,19 @@ export const createWeek = async (
   }
 };
 
-export const updateWeek = async (
+export const createWeek = withRateLimit(
+  'createWeek',
+  withAdmin(createWeekAction),
+  { message: RATE_LIMIT_MESSAGE } as FormState
+);
+
+async function updateWeekAction(
+  _currentUser: CurrentUser,
   weekId: string,
   subjectId: string,
   _prevState: FormState,
   formData: FormData
-) => {
-  const currentUser = await getCurrentUser();
-  if (!currentUser) return;
-  if (currentUser.role !== 'ADMIN') return;
-
+): Promise<FormState> {
   const formDataObj = Object.fromEntries(formData);
 
   try {
@@ -154,11 +155,17 @@ export const updateWeek = async (
   }
 };
 
-export async function deleteWeek(id: string, subjectId: string) {
-  const currentUser = await getCurrentUser();
-  if (!currentUser) return;
-  if (currentUser.role !== 'ADMIN') return;
+export const updateWeek = withRateLimit(
+  'updateWeek',
+  withAdmin(updateWeekAction),
+  { message: RATE_LIMIT_MESSAGE } as FormState
+);
 
+async function deleteWeekAction(
+  _currentUser: CurrentUser,
+  id: string,
+  subjectId: string
+): Promise<{ success: boolean; message?: string } | undefined> {
   try {
     await prisma.week.delete({
       where: { id },
@@ -168,8 +175,18 @@ export async function deleteWeek(id: string, subjectId: string) {
 
     revalidatePath(`/dashboard/subjects/${subjectId}/weeks`);
     revalidatePath(`/subjects/${slug}`);
+    return { success: true };
   } catch (error) {
     console.error('Error deleting week:', error);
     throw error;
   }
 }
+
+export const deleteWeek = withRateLimit(
+  'deleteWeek',
+  withAdmin(deleteWeekAction),
+  {
+    success: false,
+    message: RATE_LIMIT_MESSAGE,
+  }
+);
